@@ -1,49 +1,35 @@
 import React from "react";
 import Link from "next/link";
 
-const HeroBanner = ({ heroBanner }) => {
-  if (!heroBanner) {
-    return <p style={{ padding: "20px" }}>No hero data</p>;
-  }
+const Product = ({ product }) => {
+  const { id, name, price, image_url, category } = product;
 
-  const image = heroBanner.image
-    ? `http://localhost:8000${heroBanner.image}`
-    : heroBanner.image_url
-    ? `http://localhost:8000${heroBanner.image_url}`
-    : null;
+  const imageSrc = image_url
+    ? `http://localhost:8000${image_url}`
+    : "/placeholder.png";
 
   return (
-    <div className="hero-banner-container">
-      <div>
+    <Link href={`/product/${id}`}>
+      <div className="premium-card">
 
-        <p className="beats-solo">
-          {heroBanner.smallText || "Latest Collection"}
-        </p>
+        <div className="premium-image-wrapper">
+          <img src={imageSrc} alt={name} className="premium-image" />
+        </div>
 
-        <h3>{heroBanner.midText || "Best Products"}</h3>
+        <div className="premium-content">
+          {category && (
+            <span className="premium-category">
+              {category.name}
+            </span>
+          )}
 
-        <h1>{heroBanner.largeText1 || "ElectroHub"}</h1>
-
-        {image && (
-          <img src={image} alt="hero" className="hero-banner-image" />
-        )}
-
-        <div>
-          <Link href={`/product/${heroBanner.product || 1}`}>
-            <button type="button">
-              {heroBanner.buttonText || "Shop Now"}
-            </button>
-          </Link>
-
-          <div className="desc">
-            <h5>Description</h5>
-            <p>{heroBanner.desc || "Premium electronics for you"}</p>
-          </div>
+          <p className="premium-name">{name}</p>
+          <p className="premium-price">${price}</p>
         </div>
 
       </div>
-    </div>
+    </Link>
   );
 };
 
-export default HeroBanner;
+export default Product;
