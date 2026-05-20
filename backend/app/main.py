@@ -20,12 +20,12 @@ app = FastAPI(title="ElectroHub API")
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://electrohub-store.vercel.app/"
+    "https://electrohub-store.vercel.app"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,   # use ["*"] only in dev if needed
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
