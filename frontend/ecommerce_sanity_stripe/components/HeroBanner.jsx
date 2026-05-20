@@ -1,35 +1,101 @@
 import React from "react";
 import Link from "next/link";
 
-const Product = ({ product }) => {
-  const { id, name, price, image_url, category } = product;
+const HeroBanner = ({
+  heroBanner,
+}) => {
 
-  const imageSrc = image_url
-    ? `http://localhost:8000${image_url}`
-    : "/placeholder.png";
+  // 🔥 PREVENT CRASH
+  if (!heroBanner) {
+    return null;
+  }
+
+  // 🔥 BACKEND URL
+  const API_URL =
+    process.env.NEXT_PUBLIC_API_URL ||
+    "http://localhost:8000";
+
+  // 🔥 SAFE IMAGE URL
+  const image =
+    heroBanner.image
+      ? `${API_URL}${heroBanner.image}`
+      : heroBanner.image_url
+      ? `${API_URL}${heroBanner.image_url}`
+      : "/placeholder.png";
 
   return (
-    <Link href={`/product/${id}`}>
-      <div className="premium-card">
 
-        <div className="premium-image-wrapper">
-          <img src={imageSrc} alt={name} className="premium-image" />
-        </div>
+    <div className="hero-banner-container">
 
-        <div className="premium-content">
-          {category && (
-            <span className="premium-category">
-              {category.name}
-            </span>
-          )}
+      <div>
 
-          <p className="premium-name">{name}</p>
-          <p className="premium-price">${price}</p>
+        <p className="beats-solo">
+
+          {heroBanner.smallText ||
+            "Latest Collection"}
+
+        </p>
+
+        <h3>
+
+          {heroBanner.midText ||
+            "Best Products"}
+
+        </h3>
+
+        <h1>
+
+          {heroBanner.largeText1 ||
+            "ElectroHub"}
+
+        </h1>
+
+        {/* IMAGE */}
+
+        <img
+          src={image}
+          alt="hero-banner"
+          className="hero-banner-image"
+        />
+
+        <div>
+
+          <Link
+            href={`/product/${
+              heroBanner?.product || 1
+            }`}
+          >
+
+            <button type="button">
+
+              {heroBanner.buttonText ||
+                "Shop Now"}
+
+            </button>
+
+          </Link>
+
+          <div className="desc">
+
+            <h5>
+              Description
+            </h5>
+
+            <p>
+
+              {heroBanner.desc ||
+                "Premium electronics for you"}
+
+            </p>
+
+          </div>
+
         </div>
 
       </div>
-    </Link>
+
+    </div>
   );
 };
 
-export default Product;
+export default HeroBanner;
