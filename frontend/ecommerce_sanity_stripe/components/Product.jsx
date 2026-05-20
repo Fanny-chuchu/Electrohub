@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Product = ({ product }) => {
 
-  // 🔥 PREVENT CRASHES
+  // 🔥 PREVENT CRASH
   if (!product || !product.id) {
     return null;
   }
@@ -16,7 +16,7 @@ const Product = ({ product }) => {
     category,
   } = product;
 
-  // 🔥 BACKEND URL
+  // 🔥 API URL
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     "http://localhost:8000";
