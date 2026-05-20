@@ -42,7 +42,7 @@ const Cart = () => {
 
     setShowCart,
 
-    toggleCartItemQuantity,
+    toggleCartItemQuanitity,
 
     onRemove,
 
@@ -101,8 +101,7 @@ const Cart = () => {
             EMPTY CART
         ========================= */}
 
-        {(!cartItems ||
-          cartItems.length < 1) && (
+        {cartItems.length < 1 && (
 
           <div className="empty-cart">
 
@@ -146,15 +145,8 @@ const Cart = () => {
 
         <div className="product-container">
 
-          {cartItems
-
-            ?.filter(
-              (item) =>
-                item &&
-                item.id
-            )
-
-            ?.map((item) => (
+          {cartItems.map(
+            (item) => (
 
             <div
               className="product"
@@ -164,20 +156,9 @@ const Cart = () => {
               {/* IMAGE */}
 
               <img
-                src={
-                  item.image_url
-                    ? `${
-                        process.env
-                          .NEXT_PUBLIC_API_URL ||
-                        "http://localhost:8000"
-                      }${item.image_url}`
-                    : "/placeholder.png"
-                }
+                src={`http://localhost:8000${item.image_url}`}
                 className="cart-product-image"
-                alt={
-                  item.name ||
-                  "product"
-                }
+                alt={item.name}
               />
 
               {/* DETAILS */}
@@ -191,8 +172,7 @@ const Cart = () => {
                   <div>
 
                     <h5>
-                      {item.name ||
-                        "Unnamed Product"}
+                      {item.name}
                     </h5>
 
                     <p className="cart-category">
@@ -207,7 +187,7 @@ const Cart = () => {
 
                   <h4>
                     $
-                    {item.price || 0}
+                    {item.price}
                   </h4>
 
                 </div>
@@ -223,7 +203,7 @@ const Cart = () => {
                     <span
                       className="minus"
                       onClick={() =>
-                        toggleCartItemQuantity(
+                        toggleCartItemQuanitity(
                           item.id,
                           "dec"
                         )
@@ -236,14 +216,14 @@ const Cart = () => {
 
                     <span className="num">
 
-                      {item.quantity || 1}
+                      {item.quantity}
 
                     </span>
 
                     <span
                       className="plus"
                       onClick={() =>
-                        toggleCartItemQuantity(
+                        toggleCartItemQuanitity(
                           item.id,
                           "inc"
                         )
@@ -284,8 +264,7 @@ const Cart = () => {
             FOOTER
         ========================= */}
 
-        {cartItems &&
-          cartItems.length >= 1 && (
+        {cartItems.length >= 1 && (
 
           <div className="cart-bottom">
 
@@ -308,7 +287,7 @@ const Cart = () => {
               </div>
 
               <h3>
-                ${totalPrice || 0}
+                ${totalPrice}
               </h3>
 
             </div>
