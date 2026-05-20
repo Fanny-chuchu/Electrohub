@@ -3,6 +3,11 @@ import Link from "next/link";
 
 const Product = ({ product }) => {
 
+  // 🔥 PREVENT CRASHES
+  if (!product || !product.id) {
+    return null;
+  }
+
   const {
     id,
     name,
@@ -32,7 +37,7 @@ const Product = ({ product }) => {
 
           <img
             src={imageSrc}
-            alt={name}
+            alt={name || "product"}
             className="premium-image"
           />
 
@@ -40,18 +45,18 @@ const Product = ({ product }) => {
 
         <div className="premium-content">
 
-          {category && (
+          {category?.name && (
             <span className="premium-category">
               {category.name}
             </span>
           )}
 
           <p className="premium-name">
-            {name}
+            {name || "Unnamed Product"}
           </p>
 
           <p className="premium-price">
-            ${price}
+            ${price || 0}
           </p>
 
         </div>
