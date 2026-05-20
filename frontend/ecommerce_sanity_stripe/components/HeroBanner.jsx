@@ -60,12 +60,7 @@ const HeroBanner = ({
 
         <div>
 
-          <Link
-            href={`/product/${
-              heroBanner?.product || 1
-            }`}
-          >
-
+          <Link href="/products">
             <button type="button">
 
               {heroBanner.buttonText ||

@@ -75,9 +75,7 @@ const FooterBanner = ({
             {footerBanner.desc}
           </p>
 
-          <Link
-            href={`/product/${footerBanner.product}`}
-          >
+          <Link href="/products">
 
             <button type="button">
               {footerBanner.buttonText}

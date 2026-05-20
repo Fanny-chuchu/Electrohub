@@ -3,8 +3,8 @@ import React, {
 } from "react";
 
 import {
-  useRouter,
-} from "next/router";
+  toast,
+} from "react-hot-toast";
 
 import {
   loginUser,
@@ -15,10 +15,10 @@ const LoginModal = ({
   onClose,
 }) => {
 
-  const router = useRouter();
-
-  const [isRegister, setIsRegister] =
-    useState(false);
+  const [
+    isRegister,
+    setIsRegister,
+  ] = useState(false);
 
   const [name, setName] =
     useState("");
@@ -26,132 +26,102 @@ const LoginModal = ({
   const [email, setEmail] =
     useState("");
 
-  const [password, setPassword] =
-    useState("");
+  const [
+    password,
+    setPassword,
+  ] = useState("");
 
-  const [loading, setLoading] =
-    useState(false);
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
 
-  const [error, setError] =
-    useState("");
+  // LOGIN
+  const handleLogin =
+    async (e) => {
 
-  /* =========================
-     LOGIN
-  ========================= */
+      e.preventDefault();
 
-  const handleLogin = async (e) => {
+      setLoading(true);
 
-    e.preventDefault();
+      try {
 
-    setLoading(true);
+        const data =
+          await loginUser({
+            email,
+            password,
+          });
 
-    setError("");
-
-    try {
-
-      const data = await loginUser({
-        email,
-        password,
-      });
-
-      // SAVE TOKEN
-      localStorage.setItem(
-        "token",
-        data.access_token
-      );
-
-      // SAVE USER
-      localStorage.setItem(
-        "user",
-        JSON.stringify(data.user)
-      );
-
-      // CLOSE MODAL
-      onClose();
-
-      // REDIRECT BASED ON ROLE
-      if (
-        data.user.role === "admin"
-      ) {
-
-        window.location.href =
-          "/admin";
-
-      } else {
-
-        window.location.href =
-          "/";
-      }
-
-    } catch (err) {
-
-      setError(
-        err.message ||
-        "Login failed"
-      );
-
-    } finally {
-
-      setLoading(false);
-    }
-  };
-
-  /* =========================
-     REGISTER
-  ========================= */
-
-  const handleRegister = async (e) => {
-
-    e.preventDefault();
-
-    setLoading(true);
-
-    setError("");
-
-    try {
-
-      const data =
-        await registerUser({
-
-          name,
-          email,
-          password,
-
-        });
-
-      // OPTIONAL AUTO LOGIN
-      if (data?.user) {
+        localStorage.setItem(
+          "token",
+          data.access_token
+        );
 
         localStorage.setItem(
           "user",
-          JSON.stringify(data.user)
+          JSON.stringify(
+            data.user
+          )
         );
+
+        toast.success(
+          "Welcome back ✨"
+        );
+
+        onClose();
+
+        window.location.href =
+          "/";
+
+      } catch (err) {
+
+        toast.error(
+          err.message ||
+          "Login failed"
+        );
+
+      } finally {
+
+        setLoading(false);
+
       }
+    };
 
-      alert(
-        "Account created successfully"
-      );
+  // REGISTER
+  const handleRegister =
+    async (e) => {
 
-      // SWITCH TO LOGIN
-      setIsRegister(false);
+      e.preventDefault();
 
-      // CLEAR FIELDS
-      setName("");
-      setEmail("");
-      setPassword("");
+      setLoading(true);
 
-    } catch (err) {
+      try {
 
-      setError(
-        err.message ||
-        "Registration failed"
-      );
+        await registerUser({
+          name,
+          email,
+          password,
+        });
 
-    } finally {
+        toast.success(
+          "Account created ✨"
+        );
 
-      setLoading(false);
-    }
-  };
+        setIsRegister(false);
+
+      } catch (err) {
+
+        toast.error(
+          err.message ||
+          "Registration failed"
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+    };
 
   return (
 
@@ -168,43 +138,46 @@ const LoginModal = ({
       >
 
         {/* CLOSE */}
+
         <button
           className="close-modal"
           onClick={onClose}
         >
+
           ×
+
         </button>
 
+        {/* LOGO */}
+
+        <div className="auth-logo">
+
+          E
+
+        </div>
+
         {/* TITLE */}
+
         <h2>
 
           {isRegister
-            ? "Create Account"
-            : "Welcome Back"}
+            ? "Create account"
+            : "Welcome back"}
 
         </h2>
 
         {/* SUBTITLE */}
+
         <p className="auth-subtitle">
 
           {isRegister
-
-            ? "Create your ElectroHub account"
-
+            ? "Join ElectroHub today"
             : "Login to continue shopping"}
 
         </p>
 
-        {/* ERROR */}
-        {error && (
-
-          <p className="auth-error">
-            {error}
-          </p>
-
-        )}
-
         {/* FORM */}
+
         <form
           onSubmit={
             isRegister
@@ -213,7 +186,6 @@ const LoginModal = ({
           }
         >
 
-          {/* NAME */}
           {isRegister && (
 
             <input
@@ -230,7 +202,6 @@ const LoginModal = ({
 
           )}
 
-          {/* EMAIL */}
           <input
             type="email"
             placeholder="Email Address"
@@ -243,7 +214,6 @@ const LoginModal = ({
             required
           />
 
-          {/* PASSWORD */}
           <input
             type="password"
             placeholder="Password"
@@ -256,20 +226,15 @@ const LoginModal = ({
             required
           />
 
-          {/* BUTTON */}
           <button
             type="submit"
             disabled={loading}
           >
 
             {loading
-
               ? "Please wait..."
-
               : isRegister
-
               ? "Create Account"
-
               : "Login"}
 
           </button>
@@ -277,24 +242,19 @@ const LoginModal = ({
         </form>
 
         {/* SWITCH */}
+
         <p className="auth-switch">
 
           {isRegister
-
             ? "Already have an account?"
-
             : "Don't have an account?"}
 
           <span
-            onClick={() => {
-
+            onClick={() =>
               setIsRegister(
                 !isRegister
-              );
-
-              setError("");
-
-            }}
+              )
+            }
           >
 
             {isRegister

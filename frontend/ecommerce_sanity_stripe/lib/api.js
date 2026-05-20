@@ -347,22 +347,27 @@ const BASE_URRL =
 export const registerUser = async (data) => {
 
   const res = await fetch(
-    `${BASE_URL}/auth/register`,
+    `${BASE_URL}/api/auth/register`,
     {
       method: "POST",
+
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type":
+          "application/json",
       },
+
       body: JSON.stringify(data),
     }
   );
 
   if (!res.ok) {
 
-    const error = await res.json();
+    const error =
+      await res.json();
 
     throw new Error(
-      error.detail || "Registration failed"
+      error.detail ||
+      "Registration failed"
     );
   }
 
@@ -374,47 +379,27 @@ export const registerUser = async (data) => {
 export const loginUser = async (data) => {
 
   const res = await fetch(
-    `${BASE_URL}/auth/login`,
+    `${BASE_URL}/api/auth/login`,
     {
       method: "POST",
+
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type":
+          "application/json",
       },
+
       body: JSON.stringify(data),
     }
   );
 
   if (!res.ok) {
 
-    const error = await res.json();
+    const error =
+      await res.json();
 
     throw new Error(
-      error.detail || "Login failed"
-    );
-  }
-
-  return res.json();
-};
-
-export const getUserOrders = async (
-  userId
-) => {
-
-  const token =
-    localStorage.getItem("token");
-
-  const res = await fetch(
-    `${BASE_URL}/api/orders/${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(
-      "Failed to fetch orders"
+      error.detail ||
+      "Login failed"
     );
   }
 
